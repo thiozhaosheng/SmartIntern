@@ -252,10 +252,99 @@
 
         <!-- Modal form body -->
         <div class="px-5 py-5 space-y-4">
-          <!-- Title + Allowance -->
-          <!-- Location + Remote + Status -->
-          <!-- Description + Requirements -->
-          <!-- (Handled in company.js) -->
+          <!-- Title -->
+          <div>
+            <label class="text-sm font-medium text-slate-900">Title</label>
+            <input
+              id="fTitle"
+              class="mt-2 w-full border rounded-xl px-3 py-2 text-sm bg-white"
+              placeholder="e.g. Software Engineer Intern"
+            />
+          </div>
+
+          <!-- Allowance + Location -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="text-sm font-medium text-slate-900"
+                >Allowance (SGD)</label
+              >
+              <input
+                id="fAllowance"
+                type="number"
+                min="0"
+                step="1"
+                class="mt-2 w-full border rounded-xl px-3 py-2 text-sm bg-white"
+                placeholder="e.g. 1200"
+              />
+              <div class="mt-1 text-xs text-slate-500">
+                Leave blank if none.
+              </div>
+            </div>
+
+            <div>
+              <label class="text-sm font-medium text-slate-900">Location</label>
+              <input
+                id="fLocation"
+                class="mt-2 w-full border rounded-xl px-3 py-2 text-sm bg-white"
+                placeholder="e.g. Singapore / One-North"
+              />
+            </div>
+          </div>
+
+          <!-- Remote + Status -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="flex items-center gap-3 mt-1">
+              <input
+                id="fRemote"
+                type="checkbox"
+                class="h-4 w-4 rounded border-slate-300"
+              />
+              <label for="fRemote" class="text-sm font-medium text-slate-900">
+                Allow remote work
+              </label>
+            </div>
+
+            <div>
+              <label class="text-sm font-medium text-slate-900">Status</label>
+              <select
+                id="fStatus"
+                class="mt-2 w-full border rounded-xl px-3 py-2 text-sm bg-white"
+              >
+                <option value="open">Open</option>
+                <option value="draft">Draft</option>
+                <option value="closed">Closed</option>
+              </select>
+              <div class="mt-1 text-xs text-slate-500">
+                Draft won’t show on student browse page.
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label class="text-sm font-medium text-slate-900"
+              >Description</label
+            >
+            <textarea
+              id="fDescription"
+              rows="4"
+              class="mt-2 w-full border rounded-xl px-3 py-2 text-sm bg-white"
+              placeholder="Describe the role, responsibilities, and what the intern will learn..."
+            ></textarea>
+          </div>
+
+          <!-- Requirements -->
+          <div>
+            <label class="text-sm font-medium text-slate-900"
+              >Requirements</label
+            >
+            <textarea
+              id="fRequirements"
+              rows="4"
+              class="mt-2 w-full border rounded-xl px-3 py-2 text-sm bg-white"
+              placeholder="List key requirements (skills, tools, etc). You can use bullet points."
+            ></textarea>
+          </div>
 
           <div id="createMsg" class="text-sm text-slate-600"></div>
         </div>
