@@ -1,3 +1,2 @@
 // API base URL for backend requests
-// Update this when deploying (e.g. your hosted API URL)
-export const API_BASE_URL = "http://localhost:8080";
+export const API_BASE_URL = "https://smartintern-k6z0.onrender.com";
