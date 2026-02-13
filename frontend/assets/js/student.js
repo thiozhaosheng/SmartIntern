@@ -241,12 +241,18 @@ function listingCard(listing) {
             ${
               listing.description
                 ? `<div class="mt-3 text-sm text-slate-700">
-                  ${escapeHtml(listing.description)}
-                 </div>`
+                    ${escapeHtml(listing.description)}
+                   </div>`
                 : ""
             }
 
-            ${listing.requirements ? renderRequirements(listing.requirements) : ""}
+            ${
+              listing.requirements
+                ? `<div class="text-left break-words">
+                    ${renderRequirements(listing.requirements)}
+                   </div>`
+                : ""
+            }
           </div>
         </div>
 
