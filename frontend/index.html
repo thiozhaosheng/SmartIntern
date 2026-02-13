@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>SmartIntern - Login</title>
+  </head>
+
+  <body class="min-h-screen flex items-center justify-center bg-gray-50">
+    <!-- Centered login card -->
+    <div class="w-full max-w-sm bg-white p-6 rounded-xl shadow">
+      <!-- App title -->
+      <h1 class="text-xl font-semibold mb-1">SmartIntern</h1>
+      <p class="text-sm text-gray-600 mb-5">Sign in using your Login ID.</p>
+
+      <!-- Login ID field -->
+      <label class="block text-sm mb-1">Login ID</label>
+      <input
+        id="loginId"
+        class="w-full border rounded-lg px-3 py-2 mb-4"
+        placeholder="e.g. A0001 / S1234"
+      />
+
+      <!-- Password field -->
+      <label class="block text-sm mb-1">Password</label>
+      <input
+        id="password"
+        type="password"
+        class="w-full border rounded-lg px-3 py-2 mb-4"
+        placeholder="••••••••"
+      />
+
+      <!-- Submit button -->
+      <button
+        id="btnLogin"
+        class="w-full bg-black text-white rounded-lg py-2 hover:opacity-90"
+      >
+        Login
+      </button>
+
+      <!-- Error / status message -->
+      <p id="msg" class="text-sm text-red-600 mt-3"></p>
+    </div>
+
+    <!-- Login logic -->
+    <script type="module" src="./assets/js/auth.js"></script>
+  </body>
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>SmartIntern - Student</title>
+  </head>
+
+  <body class="min-h-screen bg-slate-50">
+    <!-- Top navigation bar -->
+    <div class="bg-white border-b">
+      <div
+        class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-2xl bg-black text-white flex items-center justify-center font-semibold shadow-sm"
+          >
+            SI
+          </div>
+          <div>
+            <div class="font-semibold leading-tight text-slate-900">
+              SmartIntern
+            </div>
+            <div class="text-xs text-slate-500">Student Portal</div>
+          </div>
+        </div>
+
+        <!-- Logged-in user info -->
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:block text-right">
+            <div id="userName" class="text-sm font-medium text-slate-900">
+              Loading...
+            </div>
+            <div id="userLoginId" class="text-xs text-slate-500"></div>
+          </div>
+
+          <button
+            id="btnLogout"
+            class="px-4 py-2 rounded-lg bg-black text-white hover:opacity-90 text-sm"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 py-6">
+      <!-- Page tabs -->
+      <div class="flex gap-2 mb-6">
+        <button
+          id="tabBrowse"
+          class="px-4 py-2 rounded-lg bg-black text-white text-sm"
+        >
+          Browse Listings
+        </button>
+
+        <button
+          id="tabApps"
+          class="px-4 py-2 rounded-lg bg-white border text-sm"
+        >
+          My Applications
+        </button>
+      </div>
+
+      <!-- Browse listings section -->
+      <section id="panelBrowse">
+        <div
+          class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-4"
+        >
+          <div>
+            <h1 class="text-2xl font-semibold text-slate-900">
+              Find internships
+            </h1>
+            <p class="text-sm text-slate-600">
+              Search listings, filter by industry, and apply instantly.
+            </p>
+          </div>
+
+          <!-- Search and filters -->
+          <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+            <input
+              id="searchInput"
+              class="w-full sm:w-80 border rounded-lg px-3 py-2 text-sm bg-white"
+              placeholder="Search by title, company, location..."
+            />
+
+            <select
+              id="filterIndustry"
+              class="border rounded-lg px-3 py-2 text-sm bg-white"
+            >
+              <option value="all">All industries</option>
+            </select>
+
+            <select
+              id="filterRemote"
+              class="border rounded-lg px-3 py-2 text-sm bg-white"
+            >
+              <option value="all">All</option>
+              <option value="remote">Remote OK</option>
+              <option value="onsite">On-site</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="browseMsg" class="text-sm text-slate-600 mb-4"></div>
+
+        <!-- Listings grid -->
+        <div
+          id="listingsGrid"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4"
+        ></div>
+      </section>
+
+      <!-- Applications section -->
+      <section id="panelApps" class="hidden">
+        <div class="flex items-end justify-between mb-4">
+          <div>
+            <h1 class="text-2xl font-semibold text-slate-900">
+              My applications
+            </h1>
+            <p class="text-sm text-slate-600">
+              Track application status updated by companies.
+            </p>
+          </div>
+        </div>
+
+        <div id="appsMsg" class="text-sm text-slate-600 mb-4"></div>
+        <div id="appsList" class="space-y-3"></div>
+      </section>
+    </div>
+
+    <!-- Apply modal -->
+    <div id="applyModal" class="fixed inset-0 hidden z-50">
+      <div class="absolute inset-0 bg-black/50"></div>
+
+      <div
+        class="relative max-w-xl mx-auto mt-16 bg-white rounded-2xl shadow-lg border"
+      >
+        <!-- Modal header -->
+        <div class="px-5 py-4 border-b flex items-start justify-between gap-4">
+          <div class="min-w-0">
+            <div class="text-lg font-semibold text-slate-900">
+              Apply for internship
+            </div>
+            <div
+              id="modalJobTitle"
+              class="text-sm text-slate-600 mt-0.5 truncate"
+            ></div>
+          </div>
+
+          <button
+            id="applyClose"
+            class="text-slate-500 hover:text-slate-900 text-sm"
+          >
+            Close
+          </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="px-5 py-5 space-y-4">
+          <!-- Resume upload (required) -->
+          <div>
+            <label class="text-sm font-medium text-slate-900">
+              Resume <span class="text-red-600">*</span>
+            </label>
+
+            <div class="text-xs text-slate-500 mt-1">
+              PDF / DOC / DOCX (max 5MB)
+            </div>
+
+            <input
+              id="applyResumeFile"
+              type="file"
+              required
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              class="mt-2 block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-slate-900 file:text-white hover:file:opacity-90"
+            />
+
+            <div id="resumeHint" class="text-xs text-red-600 mt-2 hidden">
+              Resume is required.
+            </div>
+          </div>
+
+          <!-- Cover letter -->
+          <div>
+            <label class="text-sm font-medium text-slate-900">
+              Cover letter
+              <span class="text-xs text-slate-500">(optional)</span>
+            </label>
+
+            <textarea
+              id="applyCoverNote"
+              rows="5"
+              class="mt-2 w-full border rounded-xl px-3 py-2 text-sm bg-white"
+              placeholder="Why are you a good fit for this internship?"
+            ></textarea>
+          </div>
+
+          <!-- Status message -->
+          <div id="applyStatus" class="text-sm text-slate-600"></div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="px-5 py-4 border-t flex items-center justify-between">
+          <button
+            id="applyCancel"
+            class="text-sm text-slate-600 hover:text-slate-900"
+          >
+            Cancel
+          </button>
+
+          <button
+            id="applySubmit"
+            class="px-4 py-2 rounded-lg bg-black text-white hover:opacity-90 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled
+          >
+            Submit application
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page logic -->
+    <script type="module" src="./assets/js/student.js"></script>
+  </body>
+</html>
