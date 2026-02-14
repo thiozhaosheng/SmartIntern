@@ -123,35 +123,61 @@ function compactLines(text = "") {
     .join("\n");
 }
 
+// ✅ UPDATED: Requirements alignment + comma-to-bullets
 function renderRequirements(requirementsRaw) {
   const cleaned = compactLines(requirementsRaw);
   if (!cleaned) return "";
 
+  const hasNewlines = cleaned.includes("\n");
+  const hasCommas = cleaned.includes(",");
+
   const lines = cleaned.split("\n");
   const looksLikeBullets = lines.some((l) => /^[-•*]/.test(l));
 
-  if (looksLikeBullets) {
-    const items = lines
-      .map((l) => l.replace(/^[-•*]\s*/, "").trim())
+  // Case 1: comma-separated single line => make bullets
+  if (!hasNewlines && hasCommas && !looksLikeBullets) {
+    const items = cleaned
+      .split(",")
+      .map((x) => x.trim())
       .filter(Boolean)
-      .slice(0, 4);
+      .slice(0, 6);
 
     if (!items.length) return "";
 
     return `
-      <div class="mt-3">
+      <div class="mt-3 text-left break-words">
         <div class="text-xs font-semibold text-slate-900">Requirements</div>
-        <ul class="mt-2 text-sm text-slate-700 list-disc pl-5 space-y-1">
+        <ul class="mt-2 text-sm text-slate-700 list-disc pl-5 space-y-1 text-left">
           ${items.map((it) => `<li>${escapeHtml(it)}</li>`).join("")}
         </ul>
       </div>
     `;
   }
 
+  // Case 2: bullet-ish input => keep bullets
+  if (looksLikeBullets) {
+    const items = lines
+      .map((l) => l.replace(/^[-•*]\s*/, "").trim())
+      .filter(Boolean)
+      .slice(0, 6);
+
+    if (!items.length) return "";
+
+    return `
+      <div class="mt-3 text-left break-words">
+        <div class="text-xs font-semibold text-slate-900">Requirements</div>
+        <ul class="mt-2 text-sm text-slate-700 list-disc pl-5 space-y-1 text-left">
+          ${items.map((it) => `<li>${escapeHtml(it)}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  }
+
+  // Case 3: plain text => force left + wrap
   return `
-    <div class="mt-3">
+    <div class="mt-3 text-left break-words">
       <div class="text-xs font-semibold text-slate-900">Requirements</div>
-      <div class="mt-2 text-sm text-slate-700 line-clamp-2 whitespace-pre-wrap">
+      <div class="mt-2 text-sm text-slate-700 line-clamp-2 whitespace-pre-wrap text-left break-words">
         ${escapeHtml(cleaned)}
       </div>
     </div>
@@ -246,13 +272,7 @@ function listingCard(listing) {
                 : ""
             }
 
-            ${
-              listing.requirements
-                ? `<div class="text-left break-words">
-                    ${renderRequirements(listing.requirements)}
-                   </div>`
-                : ""
-            }
+            ${listing.requirements ? renderRequirements(listing.requirements) : ""}
           </div>
         </div>
 
@@ -393,7 +413,6 @@ async function loadListings() {
   browseMsg.textContent = "Loading listings...";
   listingsGrid.innerHTML = "";
 
-  // Expect backend to return open + closed (draft should not come back, but we also filter it anyway)
   const { listings } = await apiFetch("/public/listings", { auth: false });
   allListings = listings || [];
 
