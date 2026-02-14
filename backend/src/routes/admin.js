@@ -484,7 +484,6 @@ router.get("/listings", requireAuth, requireAdmin, async (req, res) => {
 });
 
 /**
- * ✅ THIS WAS MISSING
  * Update a listing's status from admin side.
  * Allowed: open | closed | draft
  */
