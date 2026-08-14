@@ -65,6 +65,11 @@ app.use("/admin", adminRoutes);
 
 // Start server
 const port = process.env.PORT || 8080;
-app.listen(port, () => {
-  console.log(`API running on :${port}`);
-});
+
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`API running on :${port}`);
+  });
+}
+
+module.exports = app;

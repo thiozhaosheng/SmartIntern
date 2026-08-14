@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "src/server.js",
   "scripts": {
-    "dev": "node src/server.js"
+    "dev": "node src/server.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -15,5 +16,10 @@
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
     "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2"
   }
 }

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const { isAllowedResumeType } = require("../utils/resumeValidator");
+const { validateListingForApplication } = require("../services/listingService");
 
 const { requireAuth } = require("../middleware/requireAuth");
 const { supabaseAdmin } = require("../lib/supabaseAdmin");
@@ -50,31 +52,17 @@ router.post(
       return res.status(400).json({ error: "resume is required" });
     }
 
-    // 🔥 NEW: Check listing status before allowing application
-    const { data: listing, error: listingErr } = await admin
-      .from("internship_listings")
-      .select("id, status")
-      .eq("id", listingId)
-      .maybeSingle();
-
-    if (listingErr) return res.status(500).json({ error: listingErr.message });
-
-    if (!listing) return res.status(404).json({ error: "Listing not found" });
-
-    if (listing.status !== "open") {
-      return res.status(400).json({
-        error: "This listing is no longer open for applications.",
+    // test
+    try {
+      await validateListingForApplication(admin, listingId);
+    } catch (error) {
+      return res.status(error.statusCode || 500).json({
+        error: error.message,
       });
     }
 
     // Validate resume file type
-    const allowed = new Set([
-      "application/pdf",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    ]);
-
-    if (req.file.mimetype && !allowed.has(req.file.mimetype)) {
+    if (req.file.mimetype && !isAllowedResumeType(req.file.mimetype)) {
       return res.status(400).json({ error: "Resume must be PDF/DOC/DOCX" });
     }
 
