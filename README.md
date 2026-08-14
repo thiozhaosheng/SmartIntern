@@ -225,3 +225,5 @@ Future improvements may include:
 ---
 
 SmartIntern is designed as a structured, scalable internship management system built with clean separation of concerns and production-ready architecture.
+
+CI test
